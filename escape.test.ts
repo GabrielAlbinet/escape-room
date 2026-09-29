@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Door, Player } from "./escape";
+import { Door, Player, Room } from "./escape";
 
 describe("Player", () => {
   it("crée un joueur avec un inventaire", () => {
@@ -42,4 +42,16 @@ describe("Door", () => {
     expect(door.open).toBe(true);
     expect(player.inventory).toEqual(["torch"]);
     })
+});
+
+describe("Room", () => {
+  it("ramasse un objet : il est ajouté à l'inventaire et retiré de la salle", () => {
+    const room = new Room(["torch"]);
+    const player = new Player([]);
+
+    room.pickUpItem("torch", player);
+
+    expect(room.items).toEqual([]);
+    expect(player.inventory).toEqual(["torch"]);
+  });
 });

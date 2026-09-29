@@ -5,7 +5,7 @@ export class Player {
     this.inventory = inventory;
   }
 
-  hasItem(item: string): boolean {
+  IsItemInInventory(item: string): boolean {
     return this.inventory.includes(item);
   }
 
@@ -28,12 +28,25 @@ export class Door {
   }
 
   openWithKey(player: Player): boolean {
-    if (!player.hasItem(this.key)) {
+    if (!player.IsItemInInventory(this.key)) {
       return false;
     }
 
     player.removeItem(this.key);
     this.open = true;
     return true;
+  }
+}
+
+export class Room {
+  items: string[];
+
+  constructor(items: string[]) {
+    this.items = items;
+  }
+
+  pickUpItem(item: string, player: Player): void {
+    this.items = this.items.filter(keptItem => keptItem !== item);
+    player.inventory.push(item);
   }
 }
