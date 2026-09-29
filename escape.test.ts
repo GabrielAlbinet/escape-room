@@ -45,13 +45,33 @@ describe("Door", () => {
 });
 
 describe("Room", () => {
-  it("ramasse un objet : il est ajouté à l'inventaire et retiré de la salle", () => {
+  it("ramasse un objet, l'enlève de la salle et le met chez le joueur", () => {
     const room = new Room(["torch"]);
     const player = new Player([]);
 
-    room.pickUpItem("torch", player);
+    room.takeItem("torch", player);
 
     expect(room.items).toEqual([]);
     expect(player.inventory).toEqual(["torch"]);
   });
+
+  it("ne ramasse rien si l'objet n'est plus dans la salle", () => {
+    const room = new Room([]);
+    const player = new Player([]);
+
+    room.takeItem("torch", player);
+
+    expect(room.items).toEqual([]);
+    expect(player.inventory).toEqual([]);
+    });
+
+    it("ne ramasse pas deux fois le même objet", () => {
+    const room = new Room(["torch"]);
+    const player = new Player([]);
+
+    room.takeItem("torch", player);
+    room.takeItem("torch", player);
+
+    expect(player.inventory).toEqual(["torch"]);
+    });
 });

@@ -45,7 +45,11 @@ export class Room {
     this.items = items;
   }
 
-  pickUpItem(item: string, player: Player): void {
+  takeItem(item: string, player: Player): void {
+    if (!this.items.includes(item)) {
+        return;
+    }
+
     this.items = this.items.filter(keptItem => keptItem !== item);
     player.inventory.push(item);
   }
