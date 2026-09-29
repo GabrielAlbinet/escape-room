@@ -1,7 +1,7 @@
 export class Door {
-  close = true;
+  open = false;
 
   walkingThrough(): boolean {
-    return !this.close;
+    return this.open;
   }
 }
