@@ -12,6 +12,10 @@ export class Player {
   removeItem(item: string): void {
     this.inventory = this.inventory.filter(keptItem => keptItem !== item);
   }
+
+  useItem(item: string): boolean {
+    return this.IsItemInInventory(item);
+  }
 }
 
 export class Door {

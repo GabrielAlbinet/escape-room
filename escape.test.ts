@@ -7,6 +7,22 @@ describe("Player", () => {
 
     expect(player.inventory).toEqual(["red-key", "torch"]);
   });
+  
+  it("utilise un objet qu'il possède", () => {
+    const player = new Player(["torch"]);
+
+    const used = player.useItem("torch");
+
+    expect(used).toBe(true);
+  });
+
+  it("ne peut pas utiliser un objet qu'il ne possède pas", () => {
+    const player = new Player([]);
+
+    const used = player.useItem("torch");
+
+    expect(used).toBe(false);
+  });
 });
 
 describe("Door", () => {
