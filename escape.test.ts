@@ -125,4 +125,13 @@ describe("Enigme", () => {
 
   expect(solved).toBe(false);
   });
+
+  it("comptabilise les échecs de résolution de l'énigme", () => {
+  const enigme = new Enigme("Est-ce que l'exo 8  est long ?", "Oui");
+
+  const solved = enigme.tryToSolve("Non c'est que 4 lignes");
+
+  expect(solved).toBe(false);
+  expect(badAnswers).toEqual(1);
+  });
 });
