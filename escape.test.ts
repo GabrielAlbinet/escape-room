@@ -58,6 +58,13 @@ describe("Door", () => {
     expect(door.open).toBe(true);
     expect(player.inventory).toEqual(["torch"]);
     })
+ 
+    it("ne peut être franchie sans résoudre l'énigme", () => {
+      const enigme = new Enigme("Ouais ?", "ouais");
+      const door = new Door(true, "red-key", enigme);
+
+      expect(door.walkingThrough()).toBe(false);
+    });
 });
 
 describe("Room", () => {
@@ -99,5 +106,13 @@ describe("Enigme", () => {
     const solved = enigme.tryToSolve("Oui");
 
     expect(solved).toBe(true);
+  });
+
+  it("ne résout pas l'énigme avec une mauvaise réponse", () => {
+  const enigme = new Enigme("Est-ce que l'exo 8  est long ?", "Oui");
+
+  const solved = enigme.tryToSolve("Non c'est que 4 lignes");
+
+  expect(solved).toBe(false);
   });
 });

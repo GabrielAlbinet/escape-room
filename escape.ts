@@ -21,13 +21,18 @@ export class Player {
 export class Door {
   open: boolean;
   key: string;
+  enigme?: Enigme;
 
-  constructor(open: boolean, key: string) {
+  constructor(open: boolean, key: string, enigme?: Enigme) {
     this.open = open;
     this.key = key;
+    this.enigme = enigme;
   }
 
   walkingThrough(): boolean {
+    if (this.enigme && !this.enigme.solved) {
+      return false;
+    }
     return this.open;
   }
 
