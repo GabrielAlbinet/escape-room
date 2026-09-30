@@ -172,4 +172,22 @@ describe("Enigme", () => {
   expect(enigme.deletedFromExistence).toBe(true);
 
   });
+
+  it("Résolution impossible même avec une bonne réponse après anéantissement du joueur", () => {
+  const enigme = new Enigme("Est-ce que l'exo 8  est long ?", "Oui");
+
+  const solved = enigme.tryToSolve("Non c'est que 4 lignes");
+  const solved2 = enigme.tryToSolve("Non franchement t'abuses");
+  const solved3 = enigme.tryToSolve("Ouvre toi");
+
+  expect(solved).toBe(false);
+  expect(solved2).toBe(false);
+  expect(solved3).toBe(false);
+  expect(enigme.badAnswers).toEqual(3);
+  expect(enigme.deletedFromExistence).toBe(true);
+
+  const solvedPostDelete = enigme.tryToSolve("Oui");
+  expect(solvedPostDelete).toBe(false);
+
+  });
 });
