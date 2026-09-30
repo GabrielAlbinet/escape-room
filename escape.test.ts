@@ -45,7 +45,7 @@ describe("Door", () => {
   const opened = door.openWithKey(player);
 
   expect(opened).toBe(true);
-  expect(door.open).toBe(true);
+  expect(door.keyLockOpen).toBe(true);
   });
 
   it("retire la clé de l'inventaire du joueur quand la porte s'ouvre", () => {
@@ -55,7 +55,7 @@ describe("Door", () => {
     const opened = door.openWithKey(player);
 
     expect(opened).toBe(true);
-    expect(door.open).toBe(true);
+    expect(door.keyLockOpen).toBe(true);
     expect(player.inventory).toEqual(["torch"]);
     })
  
@@ -88,6 +88,17 @@ describe("Door", () => {
       door.activateAlarm();
       expect(door.activateAlarm()).toBe(true);
       expect(door.isAlarmOn).toBe(true);
+    });
+
+    it("ne peut pas passer une porte si l'alarme est spécifiée comme étant allumée", () => {
+      const door = new Door(true, "red-key", {isAlarmOn: true});
+
+      expect(door.isAlarmOn).toBe(true);
+      expect(door.walkingThrough()).toBe(false);
+
+      door.desactivateAlarm();
+      expect(door.isAlarmOn).toBe(false);
+      expect(door.walkingThrough()).toBe(true);
     })
 });
 

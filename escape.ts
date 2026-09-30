@@ -19,13 +19,13 @@ export class Player {
 }
 
 export class Door {
-  open: boolean;
+  keyLockOpen: boolean;
   key: string;
   enigme?: Enigme;
   isAlarmOn?: boolean;
 
-  constructor(open: boolean, key: string, options?: { enigme?: Enigme; isAlarmOn?: boolean }) {
-    this.open = open;
+  constructor(keyLockOpen: boolean, key: string, options?: { enigme?: Enigme; isAlarmOn?: boolean }) {
+    this.keyLockOpen = keyLockOpen;
     this.key = key;
     this.enigme = options?.enigme;
     this.isAlarmOn = options?.isAlarmOn ?? false;
@@ -35,7 +35,10 @@ export class Door {
     if (this.enigme && !this.enigme.solved) {
       return false;
     }
-    return this.open;
+    if (this.isAlarmOn) {
+      return false;
+    }
+    return this.keyLockOpen;
   }
 
   openWithKey(player: Player): boolean {
@@ -44,7 +47,7 @@ export class Door {
     }
 
     player.removeItem(this.key);
-    this.open = true;
+    this.keyLockOpen = true;
     return true;
   }
 
