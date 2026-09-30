@@ -67,16 +67,19 @@ export class Room {
   export class Enigme {
   question: string;
   answer: string;
-  solved: boolean;
+  solved?: boolean;
+  badAnswers: number;
 
   constructor(question: string, answer: string) {
     this.question = question;
     this.answer = answer;
     this.solved = false;
+    this.badAnswers = 0;
   }
 
   tryToSolve(tentative: string): boolean {
     if (tentative !== this.answer) {
+      this.badAnswers += 1;
       return false;
     }
 

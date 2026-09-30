@@ -132,6 +132,6 @@ describe("Enigme", () => {
   const solved = enigme.tryToSolve("Non c'est que 4 lignes");
 
   expect(solved).toBe(false);
-  expect(badAnswers).toEqual(1);
+  expect(enigme.badAnswers).toEqual(1);
   });
 });
