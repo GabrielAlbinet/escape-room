@@ -75,6 +75,15 @@ describe("Door", () => {
       expect(door.walkingThrough()).toBe(true);
       
     });
+
+    it("a une alarme activable et désactivable", () => {
+      const door = new Door(false, "red-key", true);
+      expect(door.isAlarmOn).toBe(true);
+      door.desactivateAlarm();
+      expect(door.isAlarmOn).toBe(false);
+      door.activateAlarm();
+      expect(door.isAlarmOn).toBe(true);
+    })
 });
 
 describe("Room", () => {
