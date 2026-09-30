@@ -69,28 +69,33 @@ export class Room {
   answer: string;
   solved?: boolean;
   badAnswers: number;
-  goodAnswers: number;
+  deletedFromExistence?: boolean;
 
   constructor(question: string, answer: string) {
     this.question = question;
     this.answer = answer;
     this.solved = false;
     this.badAnswers = 0;
-    this.goodAnswers = 0;
+    this.deletedFromExistence = false;
   }
 
   tryToSolve(tentative: string): boolean {
-    if (tentative !== this.answer) {
-      this.badAnswers += 1;
-      return false;
-    }
-
-    this.goodAnswers +=1
-
-    if (this.goodAnswers >= 2) {
+    if (this.deletedFromExistence) {
       return false;
     }
     
+    if (this.solved) {
+      return false;
+    }
+    
+    if (tentative !== this.answer) {
+      this.badAnswers += 1;
+      if (this.badAnswers == 3) {
+        this.deletedFromExistence = true;
+      }
+      return false;
+    }
+
     this.solved = true;
     return true;
   }

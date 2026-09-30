@@ -134,6 +134,7 @@ describe("Enigme", () => {
 
   expect(solved).toBe(true);
   expect(solved2).toBe(false);
+  expect(enigme.solved).toBe(true);
   });
 
   it("comptabilise les échecs de résolution de l'énigme", () => {
@@ -154,6 +155,21 @@ describe("Enigme", () => {
   expect(solved).toBe(false);
   expect(solved2).toBe(false);
   expect(enigme.badAnswers).toEqual(2);
+
+  });
+
+  it("se fait désintégrer de l'existence à 3 échecs", () => {
+  const enigme = new Enigme("Est-ce que l'exo 8  est long ?", "Oui");
+
+  const solved = enigme.tryToSolve("Non c'est que 4 lignes");
+  const solved2 = enigme.tryToSolve("Non franchement t'abuses");
+  const solved3 = enigme.tryToSolve("Ouvre toi");
+
+  expect(solved).toBe(false);
+  expect(solved2).toBe(false);
+  expect(solved3).toBe(false);
+  expect(enigme.badAnswers).toEqual(3);
+  expect(enigme.deletedFromExistence).toBe(true);
 
   });
 });
