@@ -65,6 +65,16 @@ describe("Door", () => {
 
       expect(door.walkingThrough()).toBe(false);
     });
+
+    it("peut être franchie avec l'énigme associée", () => {
+      const enigme = new Enigme("Ouais ?", "ouais");
+      const solved = enigme.tryToSolve("ouais");
+      const door = new Door(true, "red-key", enigme);
+
+      expect(solved).toBe(true);
+      expect(door.walkingThrough()).toBe(true);
+      
+    });
 });
 
 describe("Room", () => {
