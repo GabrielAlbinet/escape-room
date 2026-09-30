@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Door, Player, Room } from "./escape";
+import { Door, Player, Room, Enigme } from "./escape";
 
 describe("Player", () => {
   it("crée un joueur avec un inventaire", () => {
@@ -90,4 +90,14 @@ describe("Room", () => {
 
     expect(player.inventory).toEqual(["torch"]);
     });
+});
+
+describe("Enigme", () => {
+  it("résout l'énigme avec la bonne réponse", () => {
+    const enigme = new Enigme("Est-ce que l'exo 8  est long ?", "Oui");
+
+    const solved = enigme.tryToSolve("Oui");
+
+    expect(solved).toBe(true);
+  });
 });

@@ -58,3 +58,24 @@ export class Room {
     player.inventory.push(item);
   }
 }
+
+  export class Enigme {
+  question: string;
+  answer: string;
+  solved: boolean;
+
+  constructor(question: string, answer: string) {
+    this.question = question;
+    this.answer = answer;
+    this.solved = false;
+  }
+
+  tryToSolve(tentative: string): boolean {
+    if (tentative !== this.answer) {
+      return false;
+    }
+
+    this.solved = true;
+    return true;
+  }
+}
