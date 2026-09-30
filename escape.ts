@@ -23,12 +23,18 @@ export class Door {
   key: string;
   enigme?: Enigme;
   isAlarmOn?: boolean;
+  alarmCode?: string;
 
-  constructor(keyLockOpen: boolean, key: string, options?: { enigme?: Enigme; isAlarmOn?: boolean }) {
+  constructor(
+    keyLockOpen: boolean,
+    key: string,
+    options?: { enigme?: Enigme; isAlarmOn?: boolean; alarmCode?: string },
+  ) {
     this.keyLockOpen = keyLockOpen;
     this.key = key;
     this.enigme = options?.enigme;
     this.isAlarmOn = options?.isAlarmOn ?? false;
+    this.alarmCode = options?.alarmCode;
   }
 
   walkingThrough(): boolean {
@@ -51,7 +57,11 @@ export class Door {
     return true;
   }
 
-  desactivateAlarm(): boolean {
+  desactivateAlarm(player: Player): boolean {
+    if (!player.IsItemInInventory(this.alarmCode)) {
+      return false;
+    }
+    player.removeItem(this.alarmCode);
     this.isAlarmOn = false;
     return true;
   }

@@ -76,13 +76,9 @@ describe("Door", () => {
       
     });
 
-    it("a une alarme activable et désactivable", () => {
-      const door = new Door(false, "red-key", {isAlarmOn: true});
+    it("a une alarme activable", () => {
+      const door = new Door(false, "red-key", "alarm-code", {isAlarmOn: false});
 
-      expect(door.isAlarmOn).toBe(true);
-
-      door.desactivateAlarm();
-      expect(door.desactivateAlarm()).toBe(true);
       expect(door.isAlarmOn).toBe(false);
 
       door.activateAlarm();
@@ -90,13 +86,24 @@ describe("Door", () => {
       expect(door.isAlarmOn).toBe(true);
     });
 
+    it("a une alarme désactivable avec un code", () => {
+      const door = new Door(true, "blue-key", {isAlarmOn: true, alarmCode: "alarm-code"});
+      const player = new Player(["red-key", "torch", "alarm-code"]);
+
+      door.desactivateAlarm(player);
+      expect(door.isAlarmOn).toBe(false);
+      expect(player.inventory).toEqual(["red-key", "torch"]);
+
+    });
+
     it("ne peut pas passer une porte si l'alarme est spécifiée comme étant allumée", () => {
-      const door = new Door(true, "red-key", {isAlarmOn: true});
+      const door = new Door(true, "red-key", {isAlarmOn: true, alarmCode: "alarm-code"});
+      const player = new Player(["alarm-code"]);
 
       expect(door.isAlarmOn).toBe(true);
       expect(door.walkingThrough()).toBe(false);
 
-      door.desactivateAlarm();
+      door.desactivateAlarm(player);
       expect(door.isAlarmOn).toBe(false);
       expect(door.walkingThrough()).toBe(true);
     })
