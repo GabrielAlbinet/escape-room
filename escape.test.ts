@@ -61,7 +61,7 @@ describe("Door", () => {
  
     it("ne peut être franchie sans résoudre l'énigme", () => {
       const enigme = new Enigme("Ouais ?", "ouais");
-      const door = new Door(true, "red-key", enigme);
+      const door = new Door(true, "red-key", {enigme});
 
       expect(door.walkingThrough()).toBe(false);
     });
@@ -69,7 +69,7 @@ describe("Door", () => {
     it("peut être franchie avec l'énigme associée", () => {
       const enigme = new Enigme("Ouais ?", "ouais");
       const solved = enigme.tryToSolve("ouais");
-      const door = new Door(true, "red-key", enigme);
+      const door = new Door(true, "red-key", {enigme});
 
       expect(solved).toBe(true);
       expect(door.walkingThrough()).toBe(true);
@@ -77,11 +77,16 @@ describe("Door", () => {
     });
 
     it("a une alarme activable et désactivable", () => {
-      const door = new Door(false, "red-key", true);
+      const door = new Door(false, "red-key", {isAlarmOn: true});
+
       expect(door.isAlarmOn).toBe(true);
+
       door.desactivateAlarm();
+      expect(door.desactivateAlarm()).toBe(true);
       expect(door.isAlarmOn).toBe(false);
+
       door.activateAlarm();
+      expect(door.activateAlarm()).toBe(true);
       expect(door.isAlarmOn).toBe(true);
     })
 });

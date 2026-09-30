@@ -22,11 +22,13 @@ export class Door {
   open: boolean;
   key: string;
   enigme?: Enigme;
+  isAlarmOn?: boolean;
 
-  constructor(open: boolean, key: string, enigme?: Enigme) {
+  constructor(open: boolean, key: string, options?: { enigme?: Enigme; isAlarmOn?: boolean }) {
     this.open = open;
     this.key = key;
-    this.enigme = enigme;
+    this.enigme = options?.enigme;
+    this.isAlarmOn = options?.isAlarmOn ?? false;
   }
 
   walkingThrough(): boolean {
@@ -44,6 +46,15 @@ export class Door {
     player.removeItem(this.key);
     this.open = true;
     return true;
+  }
+
+  desactivateAlarm(): boolean {
+    this.isAlarmOn = false;
+    return true;
+  }
+
+  activateAlarm(): boolean {
+    return this.isAlarmOn = true;
   }
 }
 
