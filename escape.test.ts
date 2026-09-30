@@ -126,6 +126,16 @@ describe("Enigme", () => {
   expect(solved).toBe(false);
   });
 
+  it("ne peut pas résoudre une énigme déjà résolue", () => {
+  const enigme = new Enigme("Est-ce que l'exo 8  est long ?", "Oui");
+
+  const solved = enigme.tryToSolve("Oui");
+  const solved2 = enigme.tryToSolve("Oui");
+
+  expect(solved).toBe(true);
+  expect(solved2).toBe(false);
+  });
+
   it("comptabilise les échecs de résolution de l'énigme", () => {
   const enigme = new Enigme("Est-ce que l'exo 8  est long ?", "Oui");
 
@@ -133,5 +143,17 @@ describe("Enigme", () => {
 
   expect(solved).toBe(false);
   expect(enigme.badAnswers).toEqual(1);
+  });
+
+  it("peut échouer 2 fois sans être bloqué", () => {
+  const enigme = new Enigme("Est-ce que l'exo 8  est long ?", "Oui");
+
+  const solved = enigme.tryToSolve("Non c'est que 4 lignes");
+  const solved2 = enigme.tryToSolve("Non franchement t'abuses");
+
+  expect(solved).toBe(false);
+  expect(solved2).toBe(false);
+  expect(enigme.badAnswers).toEqual(2);
+
   });
 });

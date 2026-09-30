@@ -69,12 +69,14 @@ export class Room {
   answer: string;
   solved?: boolean;
   badAnswers: number;
+  goodAnswers: number;
 
   constructor(question: string, answer: string) {
     this.question = question;
     this.answer = answer;
     this.solved = false;
     this.badAnswers = 0;
+    this.goodAnswers = 0;
   }
 
   tryToSolve(tentative: string): boolean {
@@ -83,6 +85,12 @@ export class Room {
       return false;
     }
 
+    this.goodAnswers +=1
+
+    if (this.goodAnswers >= 2) {
+      return false;
+    }
+    
     this.solved = true;
     return true;
   }
