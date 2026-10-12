@@ -223,3 +223,95 @@ describe("Enigme", () => {
 
   });
 });
+
+describe("Porte du laboratoire (plusieurs conditions)", () => {
+  const createLabSetup = () => {
+    const enigme = new Enigme("Quel est le code du labo ?", "42");
+    const door = new Door(false, "lab-key", {
+      enigme,
+      isAlarmOn: true,
+      alarmCode: "lab-alarm-code",
+    });
+    const player = new Player(["lab-key", "lab-alarm-code"]);
+
+    return { door, enigme, player };
+  };
+
+  it("ne peut pas être franchie si aucune condition n'est remplie", () => {
+    const { door } = createLabSetup();
+
+    expect(door.walkingThrough()).toBe(false);
+  });
+
+  it("ne peut pas être franchie avec uniquement la clé", () => {
+    const { door, player } = createLabSetup();
+
+    door.openWithKey(player);
+
+    expect(door.keyLockOpen).toBe(true);
+    expect(door.walkingThrough()).toBe(false);
+  });
+
+  it("ne peut pas être franchie avec uniquement l'énigme résolue", () => {
+    const { door, enigme } = createLabSetup();
+
+    enigme.tryToSolve("42");
+
+    expect(enigme.solved).toBe(true);
+    expect(door.walkingThrough()).toBe(false);
+  });
+
+  it("ne peut pas être franchie avec uniquement l'alarme désactivée", () => {
+    const { door, player } = createLabSetup();
+
+    door.desactivateAlarm(player);
+
+    expect(door.isAlarmOn).toBe(false);
+    expect(door.walkingThrough()).toBe(false);
+  });
+
+  it("ne peut pas être franchie avec la clé et l'énigme sans désactiver l'alarme", () => {
+    const { door, enigme, player } = createLabSetup();
+
+    door.openWithKey(player);
+    enigme.tryToSolve("42");
+
+    expect(door.isAlarmOn).toBe(true);
+    expect(door.walkingThrough()).toBe(false);
+  });
+
+  it("ne peut pas être franchie avec la clé et l'alarme désactivée sans résoudre l'énigme", () => {
+    const { door, player } = createLabSetup();
+
+    door.openWithKey(player);
+    door.desactivateAlarm(player);
+
+    expect(door.keyLockOpen).toBe(true);
+    expect(door.isAlarmOn).toBe(false);
+    expect(door.walkingThrough()).toBe(false);
+  });
+
+  it("ne peut pas être franchie avec l'énigme et l'alarme désactivée sans la clé", () => {
+    const { door, enigme, player } = createLabSetup();
+
+    enigme.tryToSolve("42");
+    door.desactivateAlarm(player);
+
+    expect(door.keyLockOpen).toBe(false);
+    expect(door.walkingThrough()).toBe(false);
+  });
+
+  it("peut être franchie quand les trois conditions sont réunies", () => {
+    const { door, enigme, player } = createLabSetup();
+
+    door.openWithKey(player);
+    enigme.tryToSolve("42");
+    door.desactivateAlarm(player);
+
+    expect(door.keyLockOpen).toBe(true);
+    expect(enigme.solved).toBe(true);
+    expect(door.isAlarmOn).toBe(false);
+    expect(door.walkingThrough()).toBe(true);
+    expect(player.inventory).toEqual([]);
+  });
+});
